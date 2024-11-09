@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block content %}
+<div class="d-flex justify-content-center align-item-center gap-5 flex-wrap" style="margin: 100px">
+  {% for task in tasks %}
+  <div class="card w-25">
+    <div class="card-body">
+      <h3>Task Id : {{ task.id}} </h3>
+      <h3 class="card-title">Title :{{ task.task_title }}</h3>
+      <h5 class="card-title">Assign Date : {{ task.task_assign_date }}</h5>
+      <h5 class="card-title">Description : {{ task.task_description }}</h5>
+      <h6 class="card-title">
+        {% for cat in task.task_category.all %}
+        <span class="badge bg-primary">{{ cat.category_name }}</span>
+        {% endfor %}
+      </h6>
+      {% if task.is_completed == True %}
+        <div class="d-flex justify-content-center align-item-center pt-3">
+            <button class="btn btn-outline-success" disabled> Task Completed </button>
+        </div>
+      {% else %}
+        <div class="pt-3 d-flex justify-content-center align-item-center gap-3">
+            <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <!-- Message when there are no tasks -->
+  <div class="text-center">
+    <h3>Welcome to Task Management Project</h3>
+    <p>There are currently no tasks. Start by creating a new task!</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
